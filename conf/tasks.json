@@ -1,0 +1,91 @@
+{
+	"version": "2.0.0",
+	"tasks": [{
+			"label": "start_remote_debug",
+			"type": "shell",
+			"problemMatcher": "$gcc",
+			"command": "echo 'Start Remote Gdbserver '",
+			"args": [],
+			"dependsOn": ["gdbserver"],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "dedicated",
+				"showReuseMessage": true,
+				"clear": false
+			}
+		},
+
+		{
+			"label": "gdbserver",
+			"type": "shell",
+			"problemMatcher": "$gcc",
+			"command": "sshpass",
+			"args": [
+				"-p",
+				"'Huawei12#$'",
+				"ssh",
+				"-fn",
+				"root@172.16.22.200",
+				"'/usr/bin/gdbserver 172.16.22.200:5555 /opt/Jay_WS/t/t_arm'"
+			],
+			"dependsOn": ["deploy"],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "dedicated",
+				"showReuseMessage": true,
+				"clear": false
+			}
+		},
+
+		{
+			"label": "deploy",
+			"type": "shell",
+			"problemMatcher": "$gcc",
+			"command": "sshpass",
+			"args": [
+				"-p",
+				"'Huawei12#$'",
+				"scp",
+				"-r",
+				"/home/dev/Work_Test/t_arm",
+				"root@172.16.22.200:/opt/Jay_WS/demo_610"
+			],
+			"dependsOn": ["build"],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "dedicated",
+				"showReuseMessage": true,
+				"clear": false
+			}
+		},
+
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "cd",
+			"args": [
+				"/home/jay/Work/Dev/MDS_WS/demo_610/build/cmake-build-debug-default_toolchain",
+				"&&",
+				"/usr/bin/cmake",
+				"-G",
+				"'Unix Makefiles'",
+				"-DCMAKE_TOOLCHAIN_FILE=/home/jay/Work/Dev/MDS_WS/demo_610/cmake/toolchain.cmake -DCMAKE_MAKE_PROGRAM=/usr/bin/make -DCMAKE_BUILD_TYPE=Debug",
+				"/home/jay/Work/Dev/MDS_WS/demo_610",
+				"&&",
+				"make"
+			],
+			"problemMatcher": "$gcc",
+			"group": "build",
+			"presentation": {
+				"panel": "dedicated"
+			}
+		}
+
+	]
+}

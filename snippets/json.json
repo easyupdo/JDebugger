@@ -1,0 +1,171 @@
+{
+	// Place your snippets for json here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	"Debug Launch": {
+		"prefix": "jlaunch",
+		"body": [
+			"{",
+			"\t// Use IntelliSense to learn about possible attributes.",
+			"\t// Hover to view descriptions of existing attributes.",
+			"\t// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387",
+			"\t\"version\": \"0.2.0\",",
+			"\t\"configurations\": [",
+			"\t\t{",
+			"\t\t\t\"name\": \"(gdb) Launch\",",
+			"\t\t\t\"type\": \"cppdbg\",",
+			"\t\t\t\"request\": \"launch\",",
+			"\t\t\t\"program\": \"${1:/home/jay/Work/Dev/MDS_WS/MDC610Test/build/cmake-build-debug-default_toolchain/modules/TestModule/TestModule}\",",
+			"\t\t\t\"args\": [],",
+			"\t\t\t\"stopAtEntry\": false,",
+			"\t\t\t\"cwd\": \"$${fileDirname}\",",
+			"\t\t\t\"environment\": [],",
+			"\t\t\t\"externalConsole\": false,",
+			"\t\t\t\"MIMode\": \"gdb\",",
+			"\t\t\t\"setupCommands\": [",
+			"\t\t\t\t{",
+			"\t\t\t\t\"description\": \"Enable pretty-printing for gdb\",",
+			"\t\t\t\t\"text\": \"-enable-pretty-printing\",",
+			"\t\t\t\t\"ignoreFailures\": true",
+			"\t\t\t\t}",
+			"\t\t\t],",
+			"\t\t\t\"miDebuggerPath\": \"${2:/usr/bin/gdb-multiarch}\",",
+			"\t\t\t\"miDebuggerServerAddress\": \"${3:192.168.30.42:5555}\",",
+			"\t\t\t\"preLaunchTask\": \"${4:startdebug}\"",
+			"\t\t\t}",
+			"\t]",
+			"}"
+
+		],
+		"description": "Log output to console"
+	},
+	"Debug Tasks" :{
+		"prefix": "jtasks",
+		"body": [
+			"{",
+			"\t\// See https://go.microsoft.com/fwlink/?LinkId=733558",
+			"\t\// for the documentation about the tasks.json format",
+			"\t\"version\": \"2.0.0\",",
+			"\t\"tasks\": [",
+			"\t]",
+			"}"
+		]
+	},
+
+	"Debug Build": {
+		"prefix": "jbuild",
+		"body": [
+			"{",
+			"\t\"label\": \"${5:build}\",",
+			"\t\"type\": \"shell\",",
+			"\t\"command\": \"cd\",",
+            "\t\"args\": [",
+            "\t\t\"${1:/home/jay/Work/Dev/MDS_WS/MDC610Test/build/cmake-build-debug-default_toolchain}\",\//cd build_dir",
+            "\t\t\"&&\",",
+            "\t\t\"/usr/bin/cmake\",",
+            "\t\t\"-G\",\//makefile format",
+            "\t\t\"'Unix Makefiles'\",",
+            "\t\t\"-DCMAKE_TOOLCHAIN_FILE=${2:/home/jay/Work/Dev/MDS_WS/MDC610Test/cmake/toolchain.cmake}\",",
+            "\t\t\"-DCMAKE_MAKE_PROGRAM=/usr/bin/make\",",
+            "\t\t\"-DCMAKE_BUILD_TYPE=${3:Debug}\",",
+            "\t\t\"${4:/home/jay/Work/Dev/MDS_WS/MDC610Test}\",\//CMakeLists.txt DIR",
+			"\t\t\"&&\",",
+			"\t\t\"make\"",
+            "\t],",
+
+			"\t\"problemMatcher\": \"$$gcc\",",
+			"\t\"group\": \"build\",",
+			"\t\"presentation\": {",
+			"\t\// \"reveal\": \"silent\",",
+			"\t\t\"panel\": \"dedicated\"",
+			"\t}",
+			"}"
+
+		],
+		"description": "Build The Porject With CMAKE tools"
+	},
+	"Debug Deploy": {
+		"prefix": "jdeploy",
+		"body": [
+			"{",
+			"\t\"label\": \"${3:deploy}\",",
+			"\t\"type\": \"shell\",",
+			"\t\"problemMatcher\": \"$$gcc\",",
+			"\t\"command\": \"sshpass\",",
+			"\t\"args\": [",
+            "\t\t\"-p\",",
+            "\t\t\"'Huawei12#$'\",",
+            "\t\t\"scp\",",
+            "\t\t\"-r\",",
+            "\t\t\"${1:/home/jay/Work/Dev/MDS_WS/MDC610Test/build/cmake-build-debug-default_toolchain/modules/TestModule/TestModule}\", \//Local file",
+            "\t\t\"${2:root@192.168.30.42:/opt/Jay_WS/MDC610TestVscode}\"\//Remote Machine Dir",
+            "\t],",
+			"\t\"dependsOn\": [\"build\"],",
+			"\t\"presentation\": {",
+			"\t\t\"echo\": true,",
+			"\t\t\"reveal\": \"always\",",
+			"\t\t\"focus\": false,",
+			"\t\t\"panel\": \"dedicated\",",
+			"\t\t\"showReuseMessage\": true,",
+			"\t\t\"clear\": false",
+			"\t}",
+			"}"
+
+		],
+		"description": "deploy The Porject To Remote Machine With SSH/SCP"
+	},
+	"Debug Gdbserver": {
+		"prefix": "jgdbserver",
+		"body": [
+			"{",
+			"\t\"label\": \"${3:gdbserver}\",",
+			"\t\"type\": \"shell\",",
+			"\t\"problemMatcher\": \"$$gcc\",",
+			"\t\"command\": \"sshpass\",",
+			"\t\"args\": [",
+            "\t\t\"-p\",",
+            "\t\t\"'Huawei12#$'\",",
+            "\t\t\"ssh\",",
+            "\t\t\"-fn\",",
+            "\t\t\"${1:root@192.168.30.42}\",\//Remote Machine Address",
+            "\t\t\"${2:'/usr/bin/gdbserver 192.168.30.42:5555 /opt/Jay_WS/MDC610TestVscode/TestModule'}\"\//Remote Machine CMD",
+            "\t],",
+			"\t\"dependsOn\":[\"deploy\"],",
+			"\t\"presentation\": {",
+			"\t\t\"echo\": true,",
+			"\t\t\"reveal\": \"always\",",
+			"\t\t\"focus\": false,",
+			"\t\t// \"panel\": \"shared\",",
+			"\t\t\"panel\": \"dedicated\",",
+			"\t\t\"showReuseMessage\": true,",
+			"\t\t\"clear\": false",
+			"\t}",
+			"}"
+		],
+		"description": "Start The Debuger With Remote Gdbserver"
+	},
+	"StartDebug" :{
+		"prefix": "jstartdebug",
+		"body": [
+			"{",
+			"\t\"label\": \"startdebug\",",
+			"\t\"type\": \"shell\",",
+			"\t\"problemMatcher\": \"$$gcc\",",
+			"\t\"command\": \"echo 'Start Debug'\",",
+			"\t\"args\": [],",
+			"\t\"dependsOn\": [\"gdbserver\"],",
+			"\t\"presentation\": {",
+			"\t\t\"echo\": true,",
+			"\t\t\"reveal\": \"always\",",
+			"\t\t\"focus\": false,",
+			"\t\t\"panel\": \"dedicated\",",
+			"\t\t\"showReuseMessage\": true,",
+			"\t\t\"clear\": false",
+			"\t}",
+			"}"
+		]
+
+	}
+}

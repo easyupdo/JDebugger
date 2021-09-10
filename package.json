@@ -1,0 +1,175 @@
+{
+  "name": "jsnippets",
+	"displayName": "JSnippets",
+	"description": "",
+	"version": "0.2.2",
+	"publisher": "easyup",
+	"engines": {
+		"vscode": "^1.57.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+        "onCommand:jsnippets.helloWorld",
+		"onCommand:jsnippets.genlaunch",
+		"onCommand:jsnippets.gentasks",
+		"onCommand:jsnippets.startgdbserver",
+		"onCommand:jsnippets.gencode",
+		"onCommand:jsnippets.debug",
+		"onCommand:jsnippets.build"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [{
+            "command": "jsnippets.helloWorld",
+            "title": "Easyup:Hello World"
+		},{
+			"command": "jsnippets.genlaunch",
+			"title": "Easyup:Generate Launch"
+		},{
+			"command": "jsnippets.gentasks",
+			"title": "Easyup:Generate Tasks"
+		},{
+			"command": "jsnippets.startgdbserver",
+			"title": "Easyup:Start gdbserver"
+		},{
+			"command": "jsnippets.gencode",
+			"title": "Easyup:Generate Code"
+		},{
+			"command": "jsnippets.debug",
+			"title": "Easyup:Debug"
+		},
+		{
+			"command": "jsnippets.build",
+			"title": "Easyup:Build"
+		}
+	],
+		"configuration":[
+			{
+				"title": "JDebug",
+				"properties": {
+					"JDebugConf.host":{
+						"type": "string",
+						"default": "172.16.22.200",
+						"description": "Debug remote host"
+					},
+					"JDebugConf.port":{
+						"type": "string",
+						"default": "5555",
+						"description": "Debug remote port"
+					},
+					"JDebugConf.user":{
+						"type": "string",
+						"default": "root",
+						"description": "Debug remote user name"
+					},
+					"JDebugConf.passwd":{
+						"type": "string",
+						"default": "Huawei12#$",
+						"description": "Debug remote user password"
+					},
+					"JDebugConf.loc_ws":{
+						"type": "string",
+						"default": "/opt/Jay_WS/demo_610",
+						"description": "Debug Locals Workspace [local -> remote]"
+					},
+					"JDebugConf.file":{
+						"type": "string",
+						"default": "t_arm",
+						"description": "Debug file [ws/localfile -> remote]"
+					},
+					"JDebugConf.rmt_ws":{
+						"type": "string",
+						"default": "/opt/Jay_WS/demo_610",
+						"description": "Debug Remote Workspace"
+					},
+					"JDebugConf.platform":{
+						"type": "string",
+						"default": "610",
+						"description": "Debug Build Platform"
+					},
+					"JDebugConf.build_params":{
+						"type": "string",
+						"default": "'-DCMAKE_TOOLCHAIN_FILE=/home/jay/Work/Dev/MDS_WS/demo_610/cmake/toolchain.cmake' '-DCMAKE_MAKE_PROGRAM=/usr/bin/make' '-DCMAKE_BUILD_TYPE=Debug'",
+						"description": "Debug Build Params"
+					},
+					"JDebugConf.gdbserver_cmd":{
+						"type": "string",
+						"default": "sshpass -p Huawei12#$ ssh -t root@172.16.22.200 /usr/bin/gdbserver 172.16.22.200:5555 /opt/Jay_WS/demo_610/demo_610_sub",
+						"description": "Remote gdbserver"
+					},
+					"JDebugConf.sdk_path":{
+						"type": "string",
+						"default": "/home/jay/Work/App/MDC_Development_Studio/MDC_Development_Studio-Ubuntu18-1.0.012-B0120000",
+						"description": "SDK Path"
+					}
+				},
+				"path":"./conf/conf.json"
+			}
+
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when":"editorFocus",  
+					"command": "jsnippets.startgdbserver",
+					"group":"navigation"
+				},
+				{
+					"when":"editorFocus",  
+					"command": "jsnippets.genlaunch",
+					"group":"navigation"
+				},
+				{
+					"when":"editorFocus",  
+					"command": "jsnippets.gentasks",
+					"group":"navigation"
+				},
+				{
+					"when":"editorFocus",  
+					"command": "jsnippets.helloWorld",
+					"group":"navigation"
+				}
+			],
+			"explorer/context": [
+                {
+                    "command": "jsnippets.gencode",
+                    "group": "navigation"
+                },
+				{
+					"command": "jsnippets.debug",
+					"group": "navigation"
+				},
+				{
+					"command": "jsnippets.build",
+					"group": "navigation"
+				}
+            ]
+		},
+		"snippets": [
+			{
+				"language": "json",
+				"path": "./snippets/json.json"
+			}
+		]
+		
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+        "@types/vscode": "^1.57.0",
+        "@types/glob": "^7.1.3",
+        "@types/mocha": "^8.2.2",
+        "@types/node": "14.x",
+        "eslint": "^7.27.0",
+        "glob": "^7.1.7",
+        "mocha": "^8.4.0",
+        "typescript": "^4.3.2",
+        "vscode-test": "^1.5.2"
+    }
+
+}
