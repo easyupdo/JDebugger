@@ -1,8 +1,8 @@
 {
-  "name": "jsnippets",
-	"displayName": "JSnippets",
+  "name": "jdebugger",
+	"displayName": "JDebugger",
 	"description": "",
-	"version": "0.2.2",
+	"version": "0.2.4",
 	"publisher": "easyup",
 	"engines": {
 		"vscode": "^1.57.0"
@@ -11,37 +11,37 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:jsnippets.helloWorld",
-		"onCommand:jsnippets.genlaunch",
-		"onCommand:jsnippets.gentasks",
-		"onCommand:jsnippets.startgdbserver",
-		"onCommand:jsnippets.gencode",
-		"onCommand:jsnippets.debug",
-		"onCommand:jsnippets.build"
+        "onCommand:jdebugger.helloWorld",
+		"onCommand:jdebugger.genlaunch",
+		"onCommand:jdebugger.gentasks",
+		"onCommand:jdebugger.startgdbserver",
+		"onCommand:jdebugger.gencode",
+		"onCommand:jdebugger.debug",
+		"onCommand:jdebugger.build"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [{
-            "command": "jsnippets.helloWorld",
+            "command": "jdebugger.helloWorld",
             "title": "Easyup:Hello World"
 		},{
-			"command": "jsnippets.genlaunch",
+			"command": "jdebugger.genlaunch",
 			"title": "Easyup:Generate Launch"
 		},{
-			"command": "jsnippets.gentasks",
+			"command": "jdebugger.gentasks",
 			"title": "Easyup:Generate Tasks"
 		},{
-			"command": "jsnippets.startgdbserver",
+			"command": "jdebugger.startgdbserver",
 			"title": "Easyup:Start gdbserver"
 		},{
-			"command": "jsnippets.gencode",
+			"command": "jdebugger.gencode",
 			"title": "Easyup:Generate Code"
 		},{
-			"command": "jsnippets.debug",
+			"command": "jdebugger.debug",
 			"title": "Easyup:Debug"
 		},
 		{
-			"command": "jsnippets.build",
+			"command": "jdebugger.build",
 			"title": "Easyup:Build"
 		}
 	],
@@ -66,42 +66,42 @@
 					},
 					"JDebugConf.passwd":{
 						"type": "string",
-						"default": "Huawei12#$",
+						"default": "MIMA123",
 						"description": "Debug remote user password"
 					},
 					"JDebugConf.loc_ws":{
 						"type": "string",
-						"default": "/opt/Jay_WS/demo_610",
+						"default": "/opt/Jay_WS/demo",
 						"description": "Debug Locals Workspace [local -> remote]"
 					},
-					"JDebugConf.file":{
+					"JDebugConf.exec":{
 						"type": "string",
 						"default": "t_arm",
-						"description": "Debug file [ws/localfile -> remote]"
+						"description": "Debug exec file [ws/localfile -> remote]"
 					},
 					"JDebugConf.rmt_ws":{
 						"type": "string",
-						"default": "/opt/Jay_WS/demo_610",
+						"default": "/opt/Jay_WS/demo",
 						"description": "Debug Remote Workspace"
 					},
 					"JDebugConf.platform":{
 						"type": "string",
-						"default": "610",
+						"default": "110",
 						"description": "Debug Build Platform"
 					},
 					"JDebugConf.build_params":{
 						"type": "string",
-						"default": "'-DCMAKE_TOOLCHAIN_FILE=/home/jay/Work/Dev/MDS_WS/demo_610/cmake/toolchain.cmake' '-DCMAKE_MAKE_PROGRAM=/usr/bin/make' '-DCMAKE_BUILD_TYPE=Debug'",
+						"default": "'-DCMAKE_TOOLCHAIN_FILE=/home/jay/Work/Dev/_WS/demo/cmake/toolchain.cmake' '-DCMAKE_MAKE_PROGRAM=/usr/bin/make' '-DCMAKE_BUILD_TYPE=Debug'",
 						"description": "Debug Build Params"
 					},
 					"JDebugConf.gdbserver_cmd":{
 						"type": "string",
-						"default": "sshpass -p Huawei12#$ ssh -t root@172.16.22.200 /usr/bin/gdbserver 172.16.22.200:5555 /opt/Jay_WS/demo_610/demo_610_sub",
+						"default": "XX",
 						"description": "Remote gdbserver"
 					},
 					"JDebugConf.sdk_path":{
 						"type": "string",
-						"default": "/home/jay/Work/App/MDC_Development_Studio/MDC_Development_Studio-Ubuntu18-1.0.012-B0120000",
+						"default": "XX",
 						"description": "SDK Path"
 					}
 				},
@@ -113,36 +113,36 @@
 			"editor/context": [
 				{
 					"when":"editorFocus",  
-					"command": "jsnippets.startgdbserver",
+					"command": "jdebugger.startgdbserver",
 					"group":"navigation"
 				},
 				{
 					"when":"editorFocus",  
-					"command": "jsnippets.genlaunch",
+					"command": "jdebugger.genlaunch",
 					"group":"navigation"
 				},
 				{
 					"when":"editorFocus",  
-					"command": "jsnippets.gentasks",
+					"command": "jdebugger.gentasks",
 					"group":"navigation"
 				},
 				{
 					"when":"editorFocus",  
-					"command": "jsnippets.helloWorld",
+					"command": "jdebugger.helloWorld",
 					"group":"navigation"
 				}
 			],
 			"explorer/context": [
                 {
-                    "command": "jsnippets.gencode",
+                    "command": "jdebugger.gencode",
                     "group": "navigation"
                 },
 				{
-					"command": "jsnippets.debug",
+					"command": "jdebugger.debug",
 					"group": "navigation"
 				},
 				{
-					"command": "jsnippets.build",
+					"command": "jdebugger.build",
 					"group": "navigation"
 				}
             ]

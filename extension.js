@@ -18,48 +18,48 @@ function activate(context) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "jsnippets" is now active!');
+	console.log('Congratulations, your extension "jdebugger" is now active!');
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
 	
-	let launch_disposable = vscode.commands.registerCommand('jsnippets.genlaunch',function(){
+	let launch_disposable = vscode.commands.registerCommand('jdebugger.genlaunch',function(){
 		modify_launch_from_conf(get_conf());
 		context.subscriptions.push(launch_disposable);
 
 	})
-	let tasks_disposable = vscode.commands.registerCommand('jsnippets.gentasks',function (){
+	let tasks_disposable = vscode.commands.registerCommand('jdebugger.gentasks',function (){
 		modify_tasks_from_conf(get_conf());
 		context.subscriptions.push(tasks_disposable);
 	})
-	let startgdbserver_disposable = vscode.commands.registerCommand('jsnippets.startgdbserver',function (){
+	let startgdbserver_disposable = vscode.commands.registerCommand('jdebugger.startgdbserver',function (){
 		start_gdbserver(get_conf());
 		context.subscriptions.push(startgdbserver_disposable);
 	})
 	
-	let gencode_disposable = vscode.commands.registerCommand('jsnippets.gencode',function(uri){
+	let gencode_disposable = vscode.commands.registerCommand('jdebugger.gencode',function(uri){
 		console.log(uri)
 		generate_code_from_xml(uri.path,get_conf())
 		context.subscriptions.push(gencode_disposable);
 	})
 
-	let debug_disposable = vscode.commands.registerCommand('jsnippets.debug',function(uri){
+	let debug_disposable = vscode.commands.registerCommand('jdebugger.debug',function(uri){
 		console.log(uri)
 		start_debug(uri.path);
 		context.subscriptions.push(debug_disposable);
 	})
-	let build_disposable = vscode.commands.registerCommand('jsnippets.build',function(uri) {
+	let build_disposable = vscode.commands.registerCommand('jdebugger.build',function(uri) {
 		console.log(uri)
 		build_code(uri.path);
 		context.subscriptions.push(build_disposable);
 	})
 
-	let disposable = vscode.commands.registerCommand('jsnippets.helloWorld', function () {
+	let disposable = vscode.commands.registerCommand('jdebugger.helloWorld', function () {
 		// The code you place here will be executed every time your command is executed
 
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from JSnippets!');
+		vscode.window.showInformationMessage('Hello World from JDebugger!');
 
 		//TODO User
 		// if (isMainThread) {
@@ -119,6 +119,8 @@ function read_json(json_file,error_string) {
 		debug_launch_json = JSON.parse(debug_launch);
 	}catch(e) {
 		vscode.window.showErrorMessage(error_string);
+		vscode.window.showErrorMessage("Err:" + e.message);
+		console.log(e.message)
 		return
 	}
 	return debug_launch_json;
@@ -260,11 +262,22 @@ function generate_code_from_xml(proj_path,ui_conf){
 function start_gdbserver(ui_conf){
 	//Get GDBServer
 	let cmd_='';
-	let ui_cmd = ui_conf.get('gdbserver_cmd');
+	// let ui_cmd = ui_conf.get('gdbserver_cmd');
+
+	let host = ui_conf.get('host');
+	let port = ui_conf.get('port');
+	let remote_ws = ui_conf.get('rmt_ws');
+	let user = ui_conf.get('user');
+	let passwd =ui_conf.get('passwd');
+	let exec = ui_conf.get('exec');
+
+	cmd_ = "sshpass -p " + passwd + " ssh -fn " + user+"@"+host + " '/usr/bin/gdbserver "+host+":"+port + " "+remote_ws + "/" + exec+"'";
+	
 	
 
-	if(ui_cmd.length > 0) {
-		cmd_ = ui_cmd;
+	if(cmd_.length > 0) {
+		// cmd_ = ui_cmd;
+		;
 	}else {
 		let r_path = vscode.workspace.rootPath
 		let r_tasks_file = r_path + '/.vscode/tasks.json';
@@ -305,14 +318,15 @@ function start_gdbserver(ui_conf){
 	}
 	if(!is_find){
 		d_terminal = vscode.window.createTerminal({name:"JDebugServer"});
-		d_terminal.show(true);
+		d_terminal.hide();
 	}
 	d_terminal.sendText(cmd_);
+	d_terminal.sendText("clear");
 }
 
 function modify_launch_from_conf(ui_conf) {
 	// Get conf file from template
-	let extension_path = vscode.extensions.getExtension("easyup.jsnippets").extensionPath
+	let extension_path = vscode.extensions.getExtension("easyup.jdebugger").extensionPath
 	let p = extension_path + '/conf/launch.json';
 
 
@@ -338,7 +352,7 @@ function modify_launch_from_conf(ui_conf) {
 
 function modify_tasks_from_conf(ui_conf) {
 	// Get conf file from template
-	let extension_path = vscode.extensions.getExtension("easyup.jsnippets").extensionPath
+	let extension_path = vscode.extensions.getExtension("easyup.jdebugger").extensionPath
 	let tasks_path = extension_path + '/conf/tasks.json';
 
 	let tasks_data_json = read_json(tasks_path,'tasks template file parse error, Please check file')
